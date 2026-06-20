@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Motivational Quote Generator</title>
+</head>
+<body>
+    <h1>✨ Motivational Quote Generator ✨</h1>
+
+    <p>Click the button for motivation!</p>
+
+    <button onclick="showQuote()">Show Quote</button>
+
+    <h2 id="quote"></h2>
+
+    <script>
+        const quotes = [
+            "Believe in yourself and all that you are.",
+            "Success begins with a single step.",
+            "Your future is created by what you do today.",
+            "Dream big, work hard, stay focused.",
+            "Every expert was once a beginner.",
+            "Don't watch the clock; do what it does. Keep going.",
+            "Small progress is still progress.",
+            "The best way to predict the future is to create it.",
+            "You are stronger than you think.",
+            "Never give up on a dream because of the time it will take."
+        ];
+
+        function showQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            document.getElementById("quote").innerText = quotes[randomIndex];
+        }
+    </script>
+</body>
+      </html>
