@@ -1,75 +1,203 @@
-# Motivational-Quotes-
-A brief quote
 <!DOCTYPE html>
-<html>
-<head> <style>
-    body {
-        font-family: Arial, sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        margin: 0;
-    }
-    h1 { font-size: 2.5em; margin-bottom: 20px; }
-    p { font-size: 1.2em; margin-bottom: 20px; }
-    button {
-        padding: 12px 30px;
-        font-size: 1em;
-        background-color: #ff6b6b;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-    button:hover { background-color: #ff5252; }
-    #quote {
-        font-size: 1.5em;
-        font-style: italic;
-        text-align: center;
-        max-width: 600px;
-        margin-top: 30px;
-        padding: 20px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
-        min-height: 80px;
-        display: flex;
-        align-items: center;
-    }
-  </style>
-    <title>Motivational Quote Generator</title>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Fun Facts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .fact-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            line-height: 1.6;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: bold;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .fact-counter {
+            margin-top: 20px;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
 </head>
 <body>
-    <h1>✨ Motivational Quote Generator ✨</h1>
-
-    <p>Click the button for motivation!</p>
-
-    <button onclick="showQuote()">Show Quote</button>
-
-    <h2 id="quote"></h2>
+    <div class="container">
+        <h1>🎉 Fun Facts</h1>
+        <div class="fact-box" id="factDisplay">
+            Click the button to get a random fun fact!
+        </div>
+        <button onclick="getNewFact()">Get New Fact</button>
+        <div class="fact-counter">
+            Fact <span id="factCount">0</span> of <span id="totalFacts">0</span>
+        </div>
+    </div>
 
     <script>
-        const quotes = [
-            "Believe in yourself and all that you are.",
-            "Success begins with a single step.",
-            "Your future is created by what you do today.",
-            "Dream big, work hard, stay focused.",
-            "Every expert was once a beginner.",
-            "Don't watch the clock; do what it does. Keep going.",
-            "Small progress is still progress.",
-            "The best way to predict the future is to create it.",
-            "You are stronger than you think.",
-            "Never give up on a dream because of the time it will take."
+        const facts = [
+            "🐌 Snails have 14,000 teeth!",
+            "🍯 Honey never spoils. Archaeologists have found 3,000-year-old honey in Egyptian tombs that was still edible.",
+            "🧠 Your brain uses 20% of your body's energy, despite being only 2% of your body's weight.",
+            "🦑 Octopuses have three hearts and blue blood!",
+            "🌍 A day on Venus is longer than its year.",
+            "👅 Your tongue has unique prints, just like your fingerprints.",
+            "🦆 Ducks sleep with one eye open.",
+            "☕ Caffeine takes 10 minutes to enter your bloodstream.",
+            "🎸 A guitar string vibrates about 100 times per second.",
+            "🐘 Elephants are the only animals that can recognize themselves in a mirror.",
+            "🌙 The Moon is moving away from Earth at about 1.5 inches per year.",
+            "🍕 Americans eat approximately 100 acres of pizza per day!",
+            "🧲 Your body contains about 0.2% of the Earth's magnetic iron.",
+            "🐦 Hummingbirds are the only birds that can fly backwards.",
+            "🌟 Light from the Sun takes 8 minutes and 20 seconds to reach Earth."
         ];
 
-        function showQuote() {
-            const randomIndex = Math.floor(Math.random() * quotes.length);
-            document.getElementById("quote").innerText = quotes[randomIndex];
+        let currentFactIndex = 0;
+
+        function getNewFact() {
+            currentFactIndex = Math.floor(Math.random() * facts.length);
+            document.getElementById('factDisplay').textContent = facts[currentFactIndex];
+            document.getElementById('factCount').textContent = currentFactIndex + 1;
+            document.getElementById('totalFacts').textContent = facts.length;
         }
+
+        // Display first fact on page load
+        window.addEventListener('load', getNewFact);
+    </script>
+</body>
+</html>            font-size: 1.2em;
+            line-height: 1.6;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: bold;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .fact-counter {
+            margin-top: 20px;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Fun Facts</h1>
+        <div class="fact-box" id="factDisplay">
+            Click the button to get a random fun fact!
+        </div>
+        <button onclick="getNewFact()">Get New Fact</button>
+        <div class="fact-counter">
+            Fact <span id="factCount">0</span> of <span id="totalFacts">0</span>
+        </div>
+    </div>
+
+    <script>
+        const facts = [
+            "🐌 Snails have 14,000 teeth!",
+            "🍯 Honey never spoils. Archaeologists have found 3,000-year-old honey in Egyptian tombs that was still edible.",
+            "🧠 Your brain uses 20% of your body's energy, despite being only 2% of your body's weight.",
+            "🦑 Octopuses have three hearts and blue blood!",
+            "🌍 A day on Venus is longer than its year.",
+            "👅 Your tongue has unique prints, just like your fingerprints.",
+            "🦆 Ducks sleep with one eye open.",
+            "☕ Caffeine takes 10 minutes to enter your bloodstream.",
+            "🎸 A guitar string vibrates about 100 times per second.",
+            "🐘 Elephants are the only animals that can recognize themselves in a mirror.",
+            "🌙 The Moon is moving away from Earth at about 1.5 inches per year.",
+            "🍕 Americans eat approximately 100 acres of pizza per day!",
+            "🧲 Your body contains about 0.2% of the Earth's magnetic iron.",
+            "🐦 Hummingbirds are the only birds that can fly backwards.",
+            "🌟 Light from the Sun takes 8 minutes and 20 seconds to reach Earth."
+        ];
+
+        let currentFactIndex = 0;
+
+        function getNewFact() {
+            currentFactIndex = Math.floor(Math.random() * facts.length);
+            document.getElementById('factDisplay').textContent = facts[currentFactIndex];
+            document.getElementById('factCount').textContent = currentFactIndex + 1;
+            document.getElementById('totalFacts').textContent = facts.length;
+        }
+
+        // Display first fact on page load
+        window.addEventListener('load', getNewFact);
     </script>
 </body>
 </html>
